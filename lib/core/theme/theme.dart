@@ -22,9 +22,14 @@ final lightTheme = ThemeData(
     bodyColor: primaryLightColor,
     fontFamily: 'Lato',
   ),
-  colorScheme: const ColorScheme.dark(
+  colorScheme: ColorScheme.dark(
     primary: primaryLightColor,
-    secondary: accentLightColor,
+    secondary: secondaryLightColor,
     background: backgroundLightColor,
+    onBackground: onBackgroundLightColor,
+  ),
+  appBarTheme: AppBarTheme(
+    color: appBarBackgroundLightColor,
+    brightness: Brightness.light, // status bar brightness
   ),
 );

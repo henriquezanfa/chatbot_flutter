@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-const primaryLightColor = Color(0xffFFBA08);
+const primaryLightColor = Color(0xff820263);
 
-const accentLightColor = Color(0xffD00000);
+const secondaryLightColor = Color(0xffF2A65A);
 
-const backgroundLightColor = Color(0xfff8f8f8);
+const backgroundLightColor = Color(0xfffDfDfD);
+
+const appBarBackgroundLightColor = Color(0xfff3f3f3);
+
+const onBackgroundLightColor = Color(0xff444444);
