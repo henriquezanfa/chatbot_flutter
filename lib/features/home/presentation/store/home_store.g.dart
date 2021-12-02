@@ -54,6 +54,36 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$textInputEnableAtom = Atom(name: '_HomeStore.textInputEnable');
+
+  @override
+  bool get textInputEnable {
+    _$textInputEnableAtom.reportRead();
+    return super.textInputEnable;
+  }
+
+  @override
+  set textInputEnable(bool value) {
+    _$textInputEnableAtom.reportWrite(value, super.textInputEnable, () {
+      super.textInputEnable = value;
+    });
+  }
+
+  final _$textInputFocusNodeAtom = Atom(name: '_HomeStore.textInputFocusNode');
+
+  @override
+  FocusNode get textInputFocusNode {
+    _$textInputFocusNodeAtom.reportRead();
+    return super.textInputFocusNode;
+  }
+
+  @override
+  set textInputFocusNode(FocusNode value) {
+    _$textInputFocusNodeAtom.reportWrite(value, super.textInputFocusNode, () {
+      super.textInputFocusNode = value;
+    });
+  }
+
   final _$startBotAsyncAction = AsyncAction('_HomeStore.startBot');
 
   @override
@@ -61,26 +91,26 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$startBotAsyncAction.run(() => super.startBot());
   }
 
-  final _$_addNextMessageAsyncAction =
-      AsyncAction('_HomeStore._addNextMessage');
+  final _$answerNameAsyncAction = AsyncAction('_HomeStore.answerName');
 
   @override
-  Future<void> _addNextMessage({int duration = 1500}) {
-    return _$_addNextMessageAsyncAction
-        .run(() => super._addNextMessage(duration: duration));
+  Future<void> answerName(String name) {
+    return _$answerNameAsyncAction.run(() => super.answerName(name));
   }
 
-  final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
+  final _$_askNameAsyncAction = AsyncAction('_HomeStore._askName');
 
   @override
-  void _switchTyping() {
-    final _$actionInfo = _$_HomeStoreActionController.startAction(
-        name: '_HomeStore._switchTyping');
-    try {
-      return super._switchTyping();
-    } finally {
-      _$_HomeStoreActionController.endAction(_$actionInfo);
-    }
+  Future<void> _askName() {
+    return _$_askNameAsyncAction.run(() => super._askName());
+  }
+
+  final _$_switchTypingAsyncAction = AsyncAction('_HomeStore._switchTyping');
+
+  @override
+  Future<void> _switchTyping({int duration = 1500}) {
+    return _$_switchTypingAsyncAction
+        .run(() => super._switchTyping(duration: duration));
   }
 
   @override
@@ -88,7 +118,9 @@ mixin _$HomeStore on _HomeStore, Store {
     return '''
 messages: ${messages},
 isTyping: ${isTyping},
-hasStarted: ${hasStarted}
+hasStarted: ${hasStarted},
+textInputEnable: ${textInputEnable},
+textInputFocusNode: ${textInputFocusNode}
     ''';
   }
 }

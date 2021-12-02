@@ -28,7 +28,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text("Hey! "),
             Text(
               "Let's set up your account!",
               style: TextStyle(fontWeight: FontWeight.bold),

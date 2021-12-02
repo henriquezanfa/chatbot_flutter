@@ -19,15 +19,15 @@ final lightTheme = ThemeData(
     caption: TextStyle(),
     button: TextStyle(),
   ).apply(
-    bodyColor: primaryLightColor,
     fontFamily: 'Lato',
   ),
-  colorScheme: ColorScheme.dark(
+  colorScheme: ColorScheme.light(
     primary: primaryLightColor,
     secondary: secondaryLightColor,
     background: backgroundLightColor,
     onBackground: onBackgroundLightColor,
   ),
+  iconTheme: IconThemeData(color: Colors.white),
   appBarTheme: AppBarTheme(
     color: appBarBackgroundLightColor,
     brightness: Brightness.light, // status bar brightness

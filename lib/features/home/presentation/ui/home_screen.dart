@@ -6,6 +6,7 @@ import 'package:flutter_chatbot/features/home/presentation/ui/widgets/home_app_b
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/messages_list_view_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/today_chip_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/typing_indicator_widget.dart';
+import 'package:flutter_chatbot/features/home/presentation/ui/widgets/user_answer_widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ChatMessage {
@@ -25,23 +26,32 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: HomeAppBar(),
-      body: Observer(
-        builder: (_) => SafeArea(
-          child: !store.hasStarted ? buildStartButton() : buildQuiz(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Scaffold(
+        appBar: HomeAppBar(),
+        body: Observer(
+          builder: (_) => !store.hasStarted ? buildStartButton() : buildQuiz(),
         ),
       ),
     );
   }
 
-  Column buildQuiz() {
+  Widget buildQuiz() {
     return Column(
       children: [
-        TodayChipWidget(),
-        MessagesListViewWidget(),
+        Expanded(
+          child: ListView(
+            children: [
+              TodayChipWidget(),
+              MessagesListViewWidget(),
+            ],
+          ),
+        ),
         TypingIndicator(showIndicator: store.isTyping),
-        Expanded(child: Offstage()),
+        UserAnswerWidget(),
       ],
     );
   }
@@ -49,11 +59,13 @@ class HomeScreen extends StatelessWidget {
   Align buildStartButton() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        width: double.infinity,
-        child: ButtonWidget(
-          label: "Start",
-          onPressed: () => store.startBot(),
+      child: SafeArea(
+        child: Container(
+          width: double.infinity,
+          child: ButtonWidget(
+            label: "Start",
+            onPressed: () => store.startBot(),
+          ),
         ),
       ),
     );
