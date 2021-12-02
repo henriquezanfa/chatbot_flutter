@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chatbot/features/home/presentation/ui/home_screen.dart';
+import 'package:flutter_chatbot/core/di/di.dart';
+import 'package:flutter_chatbot/features/home/presentation/store/home_store.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/message_widget.dart';
 
 class MessagesListViewWidget extends StatelessWidget {
-  const MessagesListViewWidget({
+  MessagesListViewWidget({
     Key? key,
-    required this.messages,
   }) : super(key: key);
 
-  final List<ChatMessage> messages;
+  final store = getIt<HomeStore>();
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: messages.length,
+      itemCount: store.messages.length,
       itemBuilder: (_, index) {
-        final message = messages[index];
+        final message = store.messages[index];
         bool isRobot = message.sentBy == "robot";
 
         bool showIcon = true;
         if (index > 0)
-          showIcon = !(isRobot && messages[index - 1].sentBy == "robot");
+          showIcon = !(isRobot && store.messages[index - 1].sentBy == "robot");
 
         return Padding(
           padding: const EdgeInsets.all(8.0),

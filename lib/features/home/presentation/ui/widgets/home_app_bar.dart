@@ -19,13 +19,14 @@ class _HomeAppBarState extends State<HomeAppBar> {
 
     return AppBar(
       elevation: 0,
-      centerTitle: false,
+      centerTitle: true,
       title: DefaultTextStyle(
         style: TextStyle(
           fontSize: 14,
           color: theme.colorScheme.onBackground,
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             Text("Hey! "),
             Text(
