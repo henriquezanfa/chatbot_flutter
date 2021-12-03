@@ -131,6 +131,21 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$filteredCountriesAtom = Atom(name: '_HomeStore.filteredCountries');
+
+  @override
+  ObservableList<dynamic> get filteredCountries {
+    _$filteredCountriesAtom.reportRead();
+    return super.filteredCountries;
+  }
+
+  @override
+  set filteredCountries(ObservableList<dynamic> value) {
+    _$filteredCountriesAtom.reportWrite(value, super.filteredCountries, () {
+      super.filteredCountries = value;
+    });
+  }
+
   final _$startBotAsyncAction = AsyncAction('_HomeStore.startBot');
 
   @override
@@ -150,6 +165,13 @@ mixin _$HomeStore on _HomeStore, Store {
   @override
   Future<void> answerGender(String gender) {
     return _$answerGenderAsyncAction.run(() => super.answerGender(gender));
+  }
+
+  final _$answerCountryAsyncAction = AsyncAction('_HomeStore.answerCountry');
+
+  @override
+  Future<void> answerCountry(String country) {
+    return _$answerCountryAsyncAction.run(() => super.answerCountry(country));
   }
 
   final _$_askNameAsyncAction = AsyncAction('_HomeStore._askName');
@@ -173,6 +195,15 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$_askCountryAsyncAction.run(() => super._askCountry());
   }
 
+  final _$searchCountriesAsyncAction =
+      AsyncAction('_HomeStore.searchCountries');
+
+  @override
+  Future<void> searchCountries(String? search) {
+    return _$searchCountriesAsyncAction
+        .run(() => super.searchCountries(search));
+  }
+
   final _$_switchTypingAsyncAction = AsyncAction('_HomeStore._switchTyping');
 
   @override
@@ -191,7 +222,8 @@ showGenderButtons: ${showGenderButtons},
 enableCountrySelection: ${enableCountrySelection},
 textInputEnable: ${textInputEnable},
 textInputFocusNode: ${textInputFocusNode},
-currentStep: ${currentStep}
+currentStep: ${currentStep},
+filteredCountries: ${filteredCountries}
     ''';
   }
 }

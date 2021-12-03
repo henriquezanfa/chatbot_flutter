@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_chatbot/features/home/domain/client/home_client.dart';
+import 'package:flutter_chatbot/features/home/domain/model/country.dart';
 import 'package:flutter_chatbot/features/home/presentation/enum/step_enum.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/home_screen.dart';
 import 'package:mobx/mobx.dart';
@@ -16,6 +18,8 @@ final _messages = [
 ];
 
 abstract class _HomeStore with Store {
+  final HomeClient client;
+
   @observable
   ObservableList<ChatMessage> messages = ObservableList();
 
@@ -36,6 +40,13 @@ abstract class _HomeStore with Store {
 
   @observable
   StepEnum currentStep = StepEnum.name;
+
+  @observable
+  ObservableList filteredCountries = ObservableList();
+
+  List<Country> _countries = [];
+
+  _HomeStore(this.client);
 
   @action
   Future<void> startBot() async {
@@ -134,6 +145,26 @@ abstract class _HomeStore with Store {
     enableCountrySelection = true;
 
     currentStep = StepEnum.country;
+  }
+
+  @action
+  Future<void> searchCountries(String? search) async {
+    if (_countries.isEmpty)
+      _countries = await client.getCountries()
+        ..sort((a, b) => a.name.compareTo(b.name));
+
+    if (search == null || search.isEmpty) {
+      filteredCountries
+        ..clear()
+        ..addAll(_countries);
+    } else {
+      filteredCountries
+        ..clear()
+        ..addAll(_countries
+            .where((element) =>
+                element.name.toLowerCase().contains(search.toLowerCase()))
+            .toList());
+    }
   }
 
   @action

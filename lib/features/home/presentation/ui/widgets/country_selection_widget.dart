@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chatbot/core/di/di.dart';
+import 'package:flutter_chatbot/features/home/presentation/store/home_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CountrySelectionWidget extends StatefulWidget {
   const CountrySelectionWidget({
@@ -10,13 +13,19 @@ class CountrySelectionWidget extends StatefulWidget {
 }
 
 class _CountrySelectionWidgetState extends State<CountrySelectionWidget> {
+  final store = getIt<HomeStore>();
   final focusNode = FocusNode();
+  final controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
     focusNode.requestFocus();
+
+    controller.addListener(() {
+      store.searchCountries(controller.text);
+    });
   }
 
   @override
@@ -29,6 +38,7 @@ class _CountrySelectionWidgetState extends State<CountrySelectionWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
             child: TextField(
+              controller: controller,
               focusNode: focusNode,
               decoration: InputDecoration(
                 hintText: 'I was born in...',
@@ -47,27 +57,31 @@ class _CountrySelectionWidgetState extends State<CountrySelectionWidget> {
               ),
             ),
           ),
-          Expanded(
-            child: SafeArea(
-              child: ListView.separated(
-                shrinkWrap: true,
-                itemCount: 20,
-                itemBuilder: (_, index) {
-                  return GestureDetector(
-                    onTap: () => Navigator.of(context).pop("Name"),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8.0),
-                      child: Text("Name"),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
+          Observer(builder: (_) {
+            return Expanded(
+              child: SafeArea(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: store.filteredCountries.length,
+                  itemBuilder: (_, index) {
+                    final name = store.filteredCountries[index].name;
+
+                    return GestureDetector(
+                      onTap: () => Navigator.of(context).pop(name),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8.0),
+                        child: Text(name),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
+                ),
               ),
-            ),
-          )
+            );
+          })
         ],
       ),
     );
