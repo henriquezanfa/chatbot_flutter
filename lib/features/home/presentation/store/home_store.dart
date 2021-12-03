@@ -26,7 +26,7 @@ abstract class _HomeStore with Store {
   bool hasStarted = false;
 
   @observable
-  bool showGenderButtons = false;
+  bool showGenderButtons = false, enableCountrySelection = false;
 
   @observable
   bool textInputEnable = true;
@@ -75,7 +75,7 @@ abstract class _HomeStore with Store {
     _nextStep();
   }
 
-  /// User tells the name and robot says Hello.
+  /// User select the gender and robot says Great.
   @action
   Future<void> answerGender(String gender) async {
     messages.add(ChatMessage(sentBy: "user", content: gender));
@@ -83,6 +83,24 @@ abstract class _HomeStore with Store {
 
     await _switchTyping();
     messages.add(ChatMessage(sentBy: "robot", content: "Great!"));
+
+    _nextStep();
+  }
+
+  /// User select the country
+  @action
+  Future<void> answerCountry(String country) async {
+    messages.add(ChatMessage(
+      sentBy: "user",
+      content: "I was born in $country",
+    ));
+    enableCountrySelection = false;
+
+    await _switchTyping();
+    messages.add(ChatMessage(
+      sentBy: "robot",
+      content: "That's perfect!",
+    ));
 
     _nextStep();
   }
@@ -113,7 +131,7 @@ abstract class _HomeStore with Store {
   Future<void> _askCountry() async {
     await _switchTyping(duration: 500);
     messages.add(ChatMessage(sentBy: "robot", content: "Where were you born?"));
-    textInputEnable = true;
+    enableCountrySelection = true;
 
     currentStep = StepEnum.country;
   }
@@ -121,7 +139,7 @@ abstract class _HomeStore with Store {
   @action
   Future<void> _switchTyping({int duration = 1500}) async {
     isTyping = !isTyping;
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: duration));
     isTyping = !isTyping;
   }
 }

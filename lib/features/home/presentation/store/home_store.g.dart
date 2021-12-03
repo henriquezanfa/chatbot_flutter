@@ -69,6 +69,23 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$enableCountrySelectionAtom =
+      Atom(name: '_HomeStore.enableCountrySelection');
+
+  @override
+  bool get enableCountrySelection {
+    _$enableCountrySelectionAtom.reportRead();
+    return super.enableCountrySelection;
+  }
+
+  @override
+  set enableCountrySelection(bool value) {
+    _$enableCountrySelectionAtom
+        .reportWrite(value, super.enableCountrySelection, () {
+      super.enableCountrySelection = value;
+    });
+  }
+
   final _$textInputEnableAtom = Atom(name: '_HomeStore.textInputEnable');
 
   @override
@@ -171,6 +188,7 @@ messages: ${messages},
 isTyping: ${isTyping},
 hasStarted: ${hasStarted},
 showGenderButtons: ${showGenderButtons},
+enableCountrySelection: ${enableCountrySelection},
 textInputEnable: ${textInputEnable},
 textInputFocusNode: ${textInputFocusNode},
 currentStep: ${currentStep}

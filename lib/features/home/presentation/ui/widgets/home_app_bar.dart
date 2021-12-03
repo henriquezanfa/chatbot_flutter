@@ -20,6 +20,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
     return AppBar(
       elevation: 0,
       centerTitle: true,
+      automaticallyImplyLeading: false,
       title: DefaultTextStyle(
         style: TextStyle(
           fontSize: 14,
