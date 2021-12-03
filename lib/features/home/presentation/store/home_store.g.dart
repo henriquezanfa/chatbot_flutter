@@ -54,6 +54,21 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$showGenderButtonsAtom = Atom(name: '_HomeStore.showGenderButtons');
+
+  @override
+  bool get showGenderButtons {
+    _$showGenderButtonsAtom.reportRead();
+    return super.showGenderButtons;
+  }
+
+  @override
+  set showGenderButtons(bool value) {
+    _$showGenderButtonsAtom.reportWrite(value, super.showGenderButtons, () {
+      super.showGenderButtons = value;
+    });
+  }
+
   final _$textInputEnableAtom = Atom(name: '_HomeStore.textInputEnable');
 
   @override
@@ -84,6 +99,21 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$currentStepAtom = Atom(name: '_HomeStore.currentStep');
+
+  @override
+  StepEnum get currentStep {
+    _$currentStepAtom.reportRead();
+    return super.currentStep;
+  }
+
+  @override
+  set currentStep(StepEnum value) {
+    _$currentStepAtom.reportWrite(value, super.currentStep, () {
+      super.currentStep = value;
+    });
+  }
+
   final _$startBotAsyncAction = AsyncAction('_HomeStore.startBot');
 
   @override
@@ -98,11 +128,32 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$answerNameAsyncAction.run(() => super.answerName(name));
   }
 
+  final _$answerGenderAsyncAction = AsyncAction('_HomeStore.answerGender');
+
+  @override
+  Future<void> answerGender(String gender) {
+    return _$answerGenderAsyncAction.run(() => super.answerGender(gender));
+  }
+
   final _$_askNameAsyncAction = AsyncAction('_HomeStore._askName');
 
   @override
   Future<void> _askName() {
     return _$_askNameAsyncAction.run(() => super._askName());
+  }
+
+  final _$_askGenderAsyncAction = AsyncAction('_HomeStore._askGender');
+
+  @override
+  Future<void> _askGender() {
+    return _$_askGenderAsyncAction.run(() => super._askGender());
+  }
+
+  final _$_askCountryAsyncAction = AsyncAction('_HomeStore._askCountry');
+
+  @override
+  Future<void> _askCountry() {
+    return _$_askCountryAsyncAction.run(() => super._askCountry());
   }
 
   final _$_switchTypingAsyncAction = AsyncAction('_HomeStore._switchTyping');
@@ -119,8 +170,10 @@ mixin _$HomeStore on _HomeStore, Store {
 messages: ${messages},
 isTyping: ${isTyping},
 hasStarted: ${hasStarted},
+showGenderButtons: ${showGenderButtons},
 textInputEnable: ${textInputEnable},
-textInputFocusNode: ${textInputFocusNode}
+textInputFocusNode: ${textInputFocusNode},
+currentStep: ${currentStep}
     ''';
   }
 }
