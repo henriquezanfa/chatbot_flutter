@@ -17,6 +17,7 @@ class ChatBotApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Chat Bot',
       theme: lightTheme,
       home: HomeScreen(),
