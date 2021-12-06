@@ -7,6 +7,7 @@ import 'package:flutter_chatbot/features/home/presentation/ui/widgets/gender_sel
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/genre_selection_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/input_text_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/media_selection_widget.dart';
+import 'package:flutter_chatbot/features/home/presentation/ui/widgets/rating_selection.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -23,7 +24,9 @@ class UserAnswerWidget extends StatelessWidget {
           else if (store.enableGenresSelection)
             GenresSelection()
           else if (store.enableMediaSelection)
-            MediaSelection(),
+            MediaSelection()
+          else if (store.enableRatingSelection)
+            RatingSelection(store: store),
           if (store.enableGenresSelection || store.enableMediaSelection)
             ConfirmButton(store: store)
           else

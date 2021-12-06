@@ -33,13 +33,17 @@ abstract class _HomeStore with Store {
   bool showGenderButtons = false,
       enableCountrySelection = false,
       enableGenresSelection = false,
-      enableMediaSelection = false;
+      enableMediaSelection = false,
+      enableRatingSelection = false;
 
   @observable
   bool textInputEnable = true;
 
   @observable
   FocusNode textInputFocusNode = FocusNode();
+
+  @observable
+  int rating = 0;
 
   @observable
   StepEnum currentStep = StepEnum.name;
@@ -116,10 +120,13 @@ abstract class _HomeStore with Store {
         await _askMedia();
         break;
       case StepEnum.media:
-        // TODO: Handle this case.
+        await _askRating();
         break;
       case StepEnum.rating:
-        // TODO: Handle this case.
+        messages.add(ChatMessage(
+          sentBy: "robot",
+          content: "That's all!! Thank you 👋",
+        ));
         break;
     }
   }
@@ -177,8 +184,6 @@ abstract class _HomeStore with Store {
       content: "I'm interested in $prefs",
     ));
 
-    await _switchTyping();
-
     _nextStep();
   }
 
@@ -193,7 +198,18 @@ abstract class _HomeStore with Store {
       content: "I'm looking for $prefs",
     ));
 
-    await _switchTyping();
+    _nextStep();
+  }
+
+  /// User select the medias
+  @action
+  Future<void> answerRating(int rating) async {
+    enableRatingSelection = false;
+
+    messages.add(ChatMessage(
+      sentBy: "user",
+      content: "$rating",
+    ));
 
     _nextStep();
   }
@@ -229,7 +245,7 @@ abstract class _HomeStore with Store {
     currentStep = StepEnum.country;
   }
 
-  /// Robot asking the references of the user.
+  /// Robot asking the genres of the user.
   @action
   Future<void> _askGenre() async {
     await _switchTyping(duration: 500);
@@ -238,7 +254,7 @@ abstract class _HomeStore with Store {
     currentStep = StepEnum.genres;
   }
 
-  /// Robot asking the references of the user.
+  /// Robot asking the media of the user.
   @action
   Future<void> _askMedia() async {
     await _switchTyping(duration: 500);
@@ -248,6 +264,23 @@ abstract class _HomeStore with Store {
 
     enableMediaSelection = true;
 
+    currentStep = StepEnum.media;
+  }
+
+  /// Robot asking the rating of the user.
+  @action
+  Future<void> _askRating() async {
+    await _switchTyping(duration: 500);
+    messages.add(ChatMessage(
+        sentBy: "robot",
+        content: "That's interesting! Thank you for your answers."));
+    await _switchTyping();
+    messages.add(ChatMessage(
+        sentBy: "robot",
+        content:
+            "At last, please rate the experience of talking to me from 1 to 5, with 5 being the best and 1 being the worst"));
+
+    enableRatingSelection = true;
     currentStep = StepEnum.rating;
   }
 
@@ -274,7 +307,7 @@ abstract class _HomeStore with Store {
   @action
   Future<void> _switchTyping({int duration = 1500}) async {
     isTyping = !isTyping;
-    await Future.delayed(Duration(milliseconds: 0));
+    await Future.delayed(Duration(milliseconds: duration));
     isTyping = !isTyping;
   }
 }

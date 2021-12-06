@@ -120,6 +120,23 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$enableRatingSelectionAtom =
+      Atom(name: '_HomeStore.enableRatingSelection');
+
+  @override
+  bool get enableRatingSelection {
+    _$enableRatingSelectionAtom.reportRead();
+    return super.enableRatingSelection;
+  }
+
+  @override
+  set enableRatingSelection(bool value) {
+    _$enableRatingSelectionAtom.reportWrite(value, super.enableRatingSelection,
+        () {
+      super.enableRatingSelection = value;
+    });
+  }
+
   final _$textInputEnableAtom = Atom(name: '_HomeStore.textInputEnable');
 
   @override
@@ -147,6 +164,21 @@ mixin _$HomeStore on _HomeStore, Store {
   set textInputFocusNode(FocusNode value) {
     _$textInputFocusNodeAtom.reportWrite(value, super.textInputFocusNode, () {
       super.textInputFocusNode = value;
+    });
+  }
+
+  final _$ratingAtom = Atom(name: '_HomeStore.rating');
+
+  @override
+  int get rating {
+    _$ratingAtom.reportRead();
+    return super.rating;
+  }
+
+  @override
+  set rating(int value) {
+    _$ratingAtom.reportWrite(value, super.rating, () {
+      super.rating = value;
     });
   }
 
@@ -282,6 +314,13 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$answerMediaAsyncAction.run(() => super.answerMedia());
   }
 
+  final _$answerRatingAsyncAction = AsyncAction('_HomeStore.answerRating');
+
+  @override
+  Future<void> answerRating(int rating) {
+    return _$answerRatingAsyncAction.run(() => super.answerRating(rating));
+  }
+
   final _$_askNameAsyncAction = AsyncAction('_HomeStore._askName');
 
   @override
@@ -315,6 +354,13 @@ mixin _$HomeStore on _HomeStore, Store {
   @override
   Future<void> _askMedia() {
     return _$_askMediaAsyncAction.run(() => super._askMedia());
+  }
+
+  final _$_askRatingAsyncAction = AsyncAction('_HomeStore._askRating');
+
+  @override
+  Future<void> _askRating() {
+    return _$_askRatingAsyncAction.run(() => super._askRating());
   }
 
   final _$searchCountriesAsyncAction =
@@ -368,8 +414,10 @@ showGenderButtons: ${showGenderButtons},
 enableCountrySelection: ${enableCountrySelection},
 enableGenresSelection: ${enableGenresSelection},
 enableMediaSelection: ${enableMediaSelection},
+enableRatingSelection: ${enableRatingSelection},
 textInputEnable: ${textInputEnable},
 textInputFocusNode: ${textInputFocusNode},
+rating: ${rating},
 currentStep: ${currentStep},
 filteredCountries: ${filteredCountries},
 selectedGenres: ${selectedGenres},
