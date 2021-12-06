@@ -1,7 +1,8 @@
 # Flutter Chatbot
 
-Simple chatbot implementation with flutter
-<img src="https://github.com/henriquezanfa/chatbot_flutter/blob/master/.media/full.gif" height="500 >
+Simple chatbot implementation with flutter.
+
+<img src="https://github.com/henriquezanfa/chatbot_flutter/blob/master/.media/full.gif?raw=true" height="500" >
 
 ## Execute
 
