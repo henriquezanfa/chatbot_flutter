@@ -1,7 +1,7 @@
 # Flutter Chatbot
 
 Simple chatbot implementation with flutter
-![Alt Text](.media/full.gif)
+<img src="https://github.com/henriquezanfa/chatbot_flutter/blob/master/.media/full.gif" height="500 >
 
 ## Execute
 
@@ -42,10 +42,10 @@ The app uses MobX to state management, and to generate its codes it is using ```
 To get countries suggestions and persist user data, it is using firebase. The countries are on a "countries" collection
 with some country names.
 
-!["countries" collection](.media/countries.png);
+!["countries" collection](.media/countries.png)
 
 All the user anserws are being saved on another collection called "answers".
-!["answers" collection](.media/answer.png);
+!["answers" collection](.media/answer.png)
 
 ## Things to improve
 
