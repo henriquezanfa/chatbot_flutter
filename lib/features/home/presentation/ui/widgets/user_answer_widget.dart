@@ -4,7 +4,9 @@ import 'package:flutter_chatbot/features/home/presentation/store/home_store.dart
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/button_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/country_selection_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/gender_selection_widget.dart';
+import 'package:flutter_chatbot/features/home/presentation/ui/widgets/genre_selection_widget.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/widgets/input_text_widget.dart';
+import 'package:flutter_chatbot/features/home/presentation/ui/widgets/media_selection_widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -18,42 +20,12 @@ class UserAnswerWidget extends StatelessWidget {
         children: [
           if (store.showGenderButtons)
             GenderSelectionWidget(store: store)
-          else if (store.enablePreferencesSelection)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Wrap(
-                spacing: 4,
-                children: store.preferences
-                    .map(
-                      (element) {
-                        return Container(
-                          child: ChoiceChip(
-                            label: Text("${element}"),
-                            selected:
-                                store.selectedPreference.contains(element),
-                            onSelected: (bool value) {
-                              store.onPreferencesTapped(element);
-                            },
-                          ),
-                        );
-                      },
-                    )
-                    .toList()
-                    .cast<Widget>(),
-              ),
-            ),
-          if (store.enablePreferencesSelection)
-            SafeArea(
-              child: Container(
-                width: double.infinity,
-                child: ButtonWidget(
-                  label: "Confirm",
-                  onPressed: () {
-                    store.answerPreferences();
-                  },
-                ),
-              ),
-            )
+          else if (store.enableGenresSelection)
+            GenresSelection()
+          else if (store.enableMediaSelection)
+            MediaSelection(),
+          if (store.enableGenresSelection || store.enableMediaSelection)
+            ConfirmButton(store: store)
           else
             GestureDetector(
               onTap: () => selectCountry(context),
@@ -73,5 +45,29 @@ class UserAnswerWidget extends StatelessWidget {
         },
       ).then((value) => store.answerCountry(value));
     }
+  }
+}
+
+class ConfirmButton extends StatelessWidget {
+  const ConfirmButton({
+    Key? key,
+    required this.store,
+  }) : super(key: key);
+
+  final HomeStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        child: ButtonWidget(
+          label: "Confirm",
+          onPressed: store.enableGenresSelection
+              ? store.answerGenres
+              : store.answerMedia,
+        ),
+      ),
+    );
   }
 }

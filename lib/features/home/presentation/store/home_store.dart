@@ -32,7 +32,8 @@ abstract class _HomeStore with Store {
   @observable
   bool showGenderButtons = false,
       enableCountrySelection = false,
-      enablePreferencesSelection = false;
+      enableGenresSelection = false,
+      enableMediaSelection = false;
 
   @observable
   bool textInputEnable = true;
@@ -49,20 +50,31 @@ abstract class _HomeStore with Store {
   List<Country> _countries = [];
 
   @observable
-  ObservableList selectedPreference = ObservableList();
+  ObservableList selectedGenres = ObservableList(),
+      selectedMedia = ObservableList();
 
   @observable
-  ObservableList preferences = ObservableList()
-    ..addAll([
-      "Action",
-      "Comedy",
-      "Drama",
-      "Fantasy",
-      "Horror",
-      "Mystery",
-      "Romance",
-      "Thriller",
-    ]);
+  ObservableList genres = ObservableList()
+        ..addAll([
+          "Action",
+          "Comedy",
+          "Drama",
+          "Fantasy",
+          "Horror",
+          "Mystery",
+          "Romance",
+          "Thriller",
+        ]),
+      medias = ObservableList()
+        ..addAll([
+          "Podcasts",
+          "Movies",
+          "Series",
+          "Books",
+          "Audiobooks",
+          "Radios",
+          "Magazines",
+        ]);
 
   _HomeStore(this.client);
 
@@ -73,11 +85,19 @@ abstract class _HomeStore with Store {
   }
 
   @action
-  void onPreferencesTapped(String preference) {
-    if (selectedPreference.contains(preference))
-      selectedPreference.remove(preference);
+  void onGenreTapped(String genre) {
+    if (selectedGenres.contains(genre))
+      selectedGenres.remove(genre);
     else
-      selectedPreference.add(preference);
+      selectedGenres.add(genre);
+  }
+
+  @action
+  void onMediaTapped(String media) {
+    if (selectedMedia.contains(media))
+      selectedMedia.remove(media);
+    else
+      selectedMedia.add(media);
   }
 
   Future<void> _nextStep() async {
@@ -90,11 +110,12 @@ abstract class _HomeStore with Store {
         await _askCountry();
         break;
       case StepEnum.country:
-        await _askPreferences();
+        await _askGenre();
         break;
-      case StepEnum.preferences:
-      // TODO: Handle this case.
       case StepEnum.genres:
+        await _askMedia();
+        break;
+      case StepEnum.media:
         // TODO: Handle this case.
         break;
       case StepEnum.rating:
@@ -147,12 +168,29 @@ abstract class _HomeStore with Store {
 
   /// User select the preferences
   @action
-  Future<void> answerPreferences() async {
-    String prefs = selectedPreference.join(", ");
+  Future<void> answerGenres() async {
+    String prefs = selectedGenres.join(", ");
+    enableGenresSelection = false;
 
     messages.add(ChatMessage(
       sentBy: "user",
       content: "I'm interested in $prefs",
+    ));
+
+    await _switchTyping();
+
+    _nextStep();
+  }
+
+  /// User select the medias
+  @action
+  Future<void> answerMedia() async {
+    String prefs = selectedMedia.join(", ");
+    enableMediaSelection = false;
+
+    messages.add(ChatMessage(
+      sentBy: "user",
+      content: "I'm looking for $prefs",
     ));
 
     await _switchTyping();
@@ -193,11 +231,24 @@ abstract class _HomeStore with Store {
 
   /// Robot asking the references of the user.
   @action
-  Future<void> _askPreferences() async {
+  Future<void> _askGenre() async {
     await _switchTyping(duration: 500);
-    enablePreferencesSelection = true;
+    enableGenresSelection = true;
 
     currentStep = StepEnum.genres;
+  }
+
+  /// Robot asking the references of the user.
+  @action
+  Future<void> _askMedia() async {
+    await _switchTyping(duration: 500);
+    messages.add(ChatMessage(
+        sentBy: "robot",
+        content: "How nice! Which types of media are you looking for?"));
+
+    enableMediaSelection = true;
+
+    currentStep = StepEnum.rating;
   }
 
   @action

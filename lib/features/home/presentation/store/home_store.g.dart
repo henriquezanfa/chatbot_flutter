@@ -86,20 +86,37 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
-  final _$enablePreferencesSelectionAtom =
-      Atom(name: '_HomeStore.enablePreferencesSelection');
+  final _$enableGenresSelectionAtom =
+      Atom(name: '_HomeStore.enableGenresSelection');
 
   @override
-  bool get enablePreferencesSelection {
-    _$enablePreferencesSelectionAtom.reportRead();
-    return super.enablePreferencesSelection;
+  bool get enableGenresSelection {
+    _$enableGenresSelectionAtom.reportRead();
+    return super.enableGenresSelection;
   }
 
   @override
-  set enablePreferencesSelection(bool value) {
-    _$enablePreferencesSelectionAtom
-        .reportWrite(value, super.enablePreferencesSelection, () {
-      super.enablePreferencesSelection = value;
+  set enableGenresSelection(bool value) {
+    _$enableGenresSelectionAtom.reportWrite(value, super.enableGenresSelection,
+        () {
+      super.enableGenresSelection = value;
+    });
+  }
+
+  final _$enableMediaSelectionAtom =
+      Atom(name: '_HomeStore.enableMediaSelection');
+
+  @override
+  bool get enableMediaSelection {
+    _$enableMediaSelectionAtom.reportRead();
+    return super.enableMediaSelection;
+  }
+
+  @override
+  set enableMediaSelection(bool value) {
+    _$enableMediaSelectionAtom.reportWrite(value, super.enableMediaSelection,
+        () {
+      super.enableMediaSelection = value;
     });
   }
 
@@ -163,33 +180,63 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
-  final _$selectedPreferenceAtom = Atom(name: '_HomeStore.selectedPreference');
+  final _$selectedGenresAtom = Atom(name: '_HomeStore.selectedGenres');
 
   @override
-  ObservableList<dynamic> get selectedPreference {
-    _$selectedPreferenceAtom.reportRead();
-    return super.selectedPreference;
+  ObservableList<dynamic> get selectedGenres {
+    _$selectedGenresAtom.reportRead();
+    return super.selectedGenres;
   }
 
   @override
-  set selectedPreference(ObservableList<dynamic> value) {
-    _$selectedPreferenceAtom.reportWrite(value, super.selectedPreference, () {
-      super.selectedPreference = value;
+  set selectedGenres(ObservableList<dynamic> value) {
+    _$selectedGenresAtom.reportWrite(value, super.selectedGenres, () {
+      super.selectedGenres = value;
     });
   }
 
-  final _$preferencesAtom = Atom(name: '_HomeStore.preferences');
+  final _$selectedMediaAtom = Atom(name: '_HomeStore.selectedMedia');
 
   @override
-  ObservableList<dynamic> get preferences {
-    _$preferencesAtom.reportRead();
-    return super.preferences;
+  ObservableList<dynamic> get selectedMedia {
+    _$selectedMediaAtom.reportRead();
+    return super.selectedMedia;
   }
 
   @override
-  set preferences(ObservableList<dynamic> value) {
-    _$preferencesAtom.reportWrite(value, super.preferences, () {
-      super.preferences = value;
+  set selectedMedia(ObservableList<dynamic> value) {
+    _$selectedMediaAtom.reportWrite(value, super.selectedMedia, () {
+      super.selectedMedia = value;
+    });
+  }
+
+  final _$genresAtom = Atom(name: '_HomeStore.genres');
+
+  @override
+  ObservableList<dynamic> get genres {
+    _$genresAtom.reportRead();
+    return super.genres;
+  }
+
+  @override
+  set genres(ObservableList<dynamic> value) {
+    _$genresAtom.reportWrite(value, super.genres, () {
+      super.genres = value;
+    });
+  }
+
+  final _$mediasAtom = Atom(name: '_HomeStore.medias');
+
+  @override
+  ObservableList<dynamic> get medias {
+    _$mediasAtom.reportRead();
+    return super.medias;
+  }
+
+  @override
+  set medias(ObservableList<dynamic> value) {
+    _$mediasAtom.reportWrite(value, super.medias, () {
+      super.medias = value;
     });
   }
 
@@ -221,12 +268,18 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$answerCountryAsyncAction.run(() => super.answerCountry(country));
   }
 
-  final _$answerPreferencesAsyncAction =
-      AsyncAction('_HomeStore.answerPreferences');
+  final _$answerGenresAsyncAction = AsyncAction('_HomeStore.answerGenres');
 
   @override
-  Future<void> answerPreferences() {
-    return _$answerPreferencesAsyncAction.run(() => super.answerPreferences());
+  Future<void> answerGenres() {
+    return _$answerGenresAsyncAction.run(() => super.answerGenres());
+  }
+
+  final _$answerMediaAsyncAction = AsyncAction('_HomeStore.answerMedia');
+
+  @override
+  Future<void> answerMedia() {
+    return _$answerMediaAsyncAction.run(() => super.answerMedia());
   }
 
   final _$_askNameAsyncAction = AsyncAction('_HomeStore._askName');
@@ -250,12 +303,18 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$_askCountryAsyncAction.run(() => super._askCountry());
   }
 
-  final _$_askPreferencesAsyncAction =
-      AsyncAction('_HomeStore._askPreferences');
+  final _$_askGenreAsyncAction = AsyncAction('_HomeStore._askGenre');
 
   @override
-  Future<void> _askPreferences() {
-    return _$_askPreferencesAsyncAction.run(() => super._askPreferences());
+  Future<void> _askGenre() {
+    return _$_askGenreAsyncAction.run(() => super._askGenre());
+  }
+
+  final _$_askMediaAsyncAction = AsyncAction('_HomeStore._askMedia');
+
+  @override
+  Future<void> _askMedia() {
+    return _$_askMediaAsyncAction.run(() => super._askMedia());
   }
 
   final _$searchCountriesAsyncAction =
@@ -278,11 +337,22 @@ mixin _$HomeStore on _HomeStore, Store {
   final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
 
   @override
-  void onPreferencesTapped(String preference) {
+  void onGenreTapped(String genre) {
     final _$actionInfo = _$_HomeStoreActionController.startAction(
-        name: '_HomeStore.onPreferencesTapped');
+        name: '_HomeStore.onGenreTapped');
     try {
-      return super.onPreferencesTapped(preference);
+      return super.onGenreTapped(genre);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void onMediaTapped(String media) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.onMediaTapped');
+    try {
+      return super.onMediaTapped(media);
     } finally {
       _$_HomeStoreActionController.endAction(_$actionInfo);
     }
@@ -296,13 +366,16 @@ isTyping: ${isTyping},
 hasStarted: ${hasStarted},
 showGenderButtons: ${showGenderButtons},
 enableCountrySelection: ${enableCountrySelection},
-enablePreferencesSelection: ${enablePreferencesSelection},
+enableGenresSelection: ${enableGenresSelection},
+enableMediaSelection: ${enableMediaSelection},
 textInputEnable: ${textInputEnable},
 textInputFocusNode: ${textInputFocusNode},
 currentStep: ${currentStep},
 filteredCountries: ${filteredCountries},
-selectedPreference: ${selectedPreference},
-preferences: ${preferences}
+selectedGenres: ${selectedGenres},
+selectedMedia: ${selectedMedia},
+genres: ${genres},
+medias: ${medias}
     ''';
   }
 }
