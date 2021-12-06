@@ -3,5 +3,6 @@ enum StepEnum {
   gender,
   country,
   preferences,
+  genres,
   rating,
 }

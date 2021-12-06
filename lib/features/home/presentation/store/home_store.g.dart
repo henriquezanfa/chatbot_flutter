@@ -86,6 +86,23 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$enablePreferencesSelectionAtom =
+      Atom(name: '_HomeStore.enablePreferencesSelection');
+
+  @override
+  bool get enablePreferencesSelection {
+    _$enablePreferencesSelectionAtom.reportRead();
+    return super.enablePreferencesSelection;
+  }
+
+  @override
+  set enablePreferencesSelection(bool value) {
+    _$enablePreferencesSelectionAtom
+        .reportWrite(value, super.enablePreferencesSelection, () {
+      super.enablePreferencesSelection = value;
+    });
+  }
+
   final _$textInputEnableAtom = Atom(name: '_HomeStore.textInputEnable');
 
   @override
@@ -146,6 +163,36 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$selectedPreferenceAtom = Atom(name: '_HomeStore.selectedPreference');
+
+  @override
+  ObservableList<dynamic> get selectedPreference {
+    _$selectedPreferenceAtom.reportRead();
+    return super.selectedPreference;
+  }
+
+  @override
+  set selectedPreference(ObservableList<dynamic> value) {
+    _$selectedPreferenceAtom.reportWrite(value, super.selectedPreference, () {
+      super.selectedPreference = value;
+    });
+  }
+
+  final _$preferencesAtom = Atom(name: '_HomeStore.preferences');
+
+  @override
+  ObservableList<dynamic> get preferences {
+    _$preferencesAtom.reportRead();
+    return super.preferences;
+  }
+
+  @override
+  set preferences(ObservableList<dynamic> value) {
+    _$preferencesAtom.reportWrite(value, super.preferences, () {
+      super.preferences = value;
+    });
+  }
+
   final _$startBotAsyncAction = AsyncAction('_HomeStore.startBot');
 
   @override
@@ -174,6 +221,14 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$answerCountryAsyncAction.run(() => super.answerCountry(country));
   }
 
+  final _$answerPreferencesAsyncAction =
+      AsyncAction('_HomeStore.answerPreferences');
+
+  @override
+  Future<void> answerPreferences() {
+    return _$answerPreferencesAsyncAction.run(() => super.answerPreferences());
+  }
+
   final _$_askNameAsyncAction = AsyncAction('_HomeStore._askName');
 
   @override
@@ -195,6 +250,14 @@ mixin _$HomeStore on _HomeStore, Store {
     return _$_askCountryAsyncAction.run(() => super._askCountry());
   }
 
+  final _$_askPreferencesAsyncAction =
+      AsyncAction('_HomeStore._askPreferences');
+
+  @override
+  Future<void> _askPreferences() {
+    return _$_askPreferencesAsyncAction.run(() => super._askPreferences());
+  }
+
   final _$searchCountriesAsyncAction =
       AsyncAction('_HomeStore.searchCountries');
 
@@ -212,6 +275,19 @@ mixin _$HomeStore on _HomeStore, Store {
         .run(() => super._switchTyping(duration: duration));
   }
 
+  final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
+
+  @override
+  void onPreferencesTapped(String preference) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.onPreferencesTapped');
+    try {
+      return super.onPreferencesTapped(preference);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -220,10 +296,13 @@ isTyping: ${isTyping},
 hasStarted: ${hasStarted},
 showGenderButtons: ${showGenderButtons},
 enableCountrySelection: ${enableCountrySelection},
+enablePreferencesSelection: ${enablePreferencesSelection},
 textInputEnable: ${textInputEnable},
 textInputFocusNode: ${textInputFocusNode},
 currentStep: ${currentStep},
-filteredCountries: ${filteredCountries}
+filteredCountries: ${filteredCountries},
+selectedPreference: ${selectedPreference},
+preferences: ${preferences}
     ''';
   }
 }

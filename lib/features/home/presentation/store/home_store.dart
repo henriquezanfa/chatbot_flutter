@@ -30,7 +30,9 @@ abstract class _HomeStore with Store {
   bool hasStarted = false;
 
   @observable
-  bool showGenderButtons = false, enableCountrySelection = false;
+  bool showGenderButtons = false,
+      enableCountrySelection = false,
+      enablePreferencesSelection = false;
 
   @observable
   bool textInputEnable = true;
@@ -46,12 +48,36 @@ abstract class _HomeStore with Store {
 
   List<Country> _countries = [];
 
+  @observable
+  ObservableList selectedPreference = ObservableList();
+
+  @observable
+  ObservableList preferences = ObservableList()
+    ..addAll([
+      "Action",
+      "Comedy",
+      "Drama",
+      "Fantasy",
+      "Horror",
+      "Mystery",
+      "Romance",
+      "Thriller",
+    ]);
+
   _HomeStore(this.client);
 
   @action
   Future<void> startBot() async {
     hasStarted = true;
     await _askName();
+  }
+
+  @action
+  void onPreferencesTapped(String preference) {
+    if (selectedPreference.contains(preference))
+      selectedPreference.remove(preference);
+    else
+      selectedPreference.add(preference);
   }
 
   Future<void> _nextStep() async {
@@ -64,9 +90,11 @@ abstract class _HomeStore with Store {
         await _askCountry();
         break;
       case StepEnum.country:
-        // TODO: Handle this case.
+        await _askPreferences();
         break;
       case StepEnum.preferences:
+      // TODO: Handle this case.
+      case StepEnum.genres:
         // TODO: Handle this case.
         break;
       case StepEnum.rating:
@@ -110,8 +138,24 @@ abstract class _HomeStore with Store {
     await _switchTyping();
     messages.add(ChatMessage(
       sentBy: "robot",
-      content: "That's perfect!",
+      content:
+          "That's perfect! And which types of genres are you interested in?",
     ));
+
+    _nextStep();
+  }
+
+  /// User select the preferences
+  @action
+  Future<void> answerPreferences() async {
+    String prefs = selectedPreference.join(", ");
+
+    messages.add(ChatMessage(
+      sentBy: "user",
+      content: "I'm interested in $prefs",
+    ));
+
+    await _switchTyping();
 
     _nextStep();
   }
@@ -137,7 +181,7 @@ abstract class _HomeStore with Store {
     currentStep = StepEnum.gender;
   }
 
-  /// Robot asking the gender of the user.
+  /// Robot asking the country of the user.
   @action
   Future<void> _askCountry() async {
     await _switchTyping(duration: 500);
@@ -145,6 +189,15 @@ abstract class _HomeStore with Store {
     enableCountrySelection = true;
 
     currentStep = StepEnum.country;
+  }
+
+  /// Robot asking the references of the user.
+  @action
+  Future<void> _askPreferences() async {
+    await _switchTyping(duration: 500);
+    enablePreferencesSelection = true;
+
+    currentStep = StepEnum.genres;
   }
 
   @action
@@ -170,7 +223,7 @@ abstract class _HomeStore with Store {
   @action
   Future<void> _switchTyping({int duration = 1500}) async {
     isTyping = !isTyping;
-    await Future.delayed(Duration(milliseconds: duration));
+    await Future.delayed(Duration(milliseconds: 0));
     isTyping = !isTyping;
   }
 }
