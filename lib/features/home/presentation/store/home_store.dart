@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chatbot/features/home/domain/client/home_client.dart';
+import 'package:flutter_chatbot/features/home/domain/model/answer_model.dart';
 import 'package:flutter_chatbot/features/home/domain/model/country.dart';
 import 'package:flutter_chatbot/features/home/presentation/enum/step_enum.dart';
 import 'package:flutter_chatbot/features/home/presentation/ui/home_screen.dart';
@@ -53,12 +54,14 @@ abstract class _HomeStore with Store {
 
   List<Country> _countries = [];
 
+  late String name, gender, country;
+
   @observable
   ObservableList selectedGenres = ObservableList(),
       selectedMedia = ObservableList();
 
   @observable
-  ObservableList genres = ObservableList()
+  ObservableList genres = ObservableList<String>()
         ..addAll([
           "Action",
           "Comedy",
@@ -69,7 +72,7 @@ abstract class _HomeStore with Store {
           "Romance",
           "Thriller",
         ]),
-      medias = ObservableList()
+      medias = ObservableList<String>()
         ..addAll([
           "Podcasts",
           "Movies",
@@ -127,6 +130,8 @@ abstract class _HomeStore with Store {
           sentBy: "robot",
           content: "That's all!! Thank you 👋",
         ));
+
+        _saveUserAnswers();
         break;
     }
   }
@@ -134,6 +139,7 @@ abstract class _HomeStore with Store {
   /// User tells the name and robot says Hello.
   @action
   Future<void> answerName(String name) async {
+    this.name = name;
     messages.add(ChatMessage(sentBy: "user", content: name));
     textInputEnable = false;
 
@@ -145,6 +151,8 @@ abstract class _HomeStore with Store {
   /// User select the gender and robot says Great.
   @action
   Future<void> answerGender(String gender) async {
+    this.gender = gender;
+
     messages.add(ChatMessage(sentBy: "user", content: gender));
     showGenderButtons = false;
 
@@ -157,6 +165,8 @@ abstract class _HomeStore with Store {
   /// User select the country
   @action
   Future<void> answerCountry(String country) async {
+    this.country = country;
+
     messages.add(ChatMessage(
       sentBy: "user",
       content: "I was born in $country",
@@ -204,6 +214,7 @@ abstract class _HomeStore with Store {
   /// User select the medias
   @action
   Future<void> answerRating(int rating) async {
+    this.rating = rating;
     enableRatingSelection = false;
 
     messages.add(ChatMessage(
@@ -309,5 +320,17 @@ abstract class _HomeStore with Store {
     isTyping = !isTyping;
     await Future.delayed(Duration(milliseconds: duration));
     isTyping = !isTyping;
+  }
+
+  void _saveUserAnswers() {
+    final answerModel = AnswerModel(
+        name: name,
+        gender: gender,
+        country: country,
+        genres: genres.toList() as List<String>,
+        medias: medias.toList() as List<String>,
+        rating: rating);
+
+    client.saveUserAnswers(answerModel);
   }
 }
